@@ -33,11 +33,9 @@ func Execute() {
 func init() {
 	rootCmd.PersistentFlags().StringP("username", "u", "username", "The username")
 	rootCmd.PersistentFlags().StringP("password", "p", "1234", "The password")
-	rootCmd.PersistentFlags().StringP("id", "i", "", "User ID")
-	rootCmd.PersistentFlags().BoolP("admin", "a", false, "Is the user admin?")
+	rootCmd.PersistentFlags().StringP("data", "d", "{}", "JSON Record")
 
 	viper.BindPFlag("username", rootCmd.PersistentFlags().Lookup("server"))
 	viper.BindPFlag("password", rootCmd.PersistentFlags().Lookup("port"))
-	viper.BindPFlag("id", rootCmd.PersistentFlags().Lookup("id"))
-	viper.BindPFlag("admin", rootCmd.PersistentFlags().Lookup("admin"))
+	viper.BindPFlag("data", rootCmd.PersistentFlags().Lookup("data"))
 }
