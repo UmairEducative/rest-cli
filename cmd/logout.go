@@ -17,4 +17,5 @@ var logoutCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(logoutCmd)
+	user := User{Username: username, Password: password}
 }

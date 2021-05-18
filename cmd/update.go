@@ -17,4 +17,6 @@ var updateCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(updateCmd)
+	user := User{Username: username, Password: password}
+
 }

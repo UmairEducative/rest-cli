@@ -17,4 +17,5 @@ var deleteCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(deleteCmd)
+	user := User{Username: username, Password: password}
 }
