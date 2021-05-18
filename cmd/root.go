@@ -18,7 +18,7 @@ var password string
 
 type User struct {
 	ID        int    `json:"id"`
-	Username  string `json:"user"`
+	Username  string `json:"username"`
 	Password  string `json:"password"`
 	LastLogin int64  `json:"lastlogin"`
 	Admin     int    `json:"admin"`
@@ -79,7 +79,7 @@ func Execute() {
 }
 
 func init() {
-	rootCmd.PersistentFlags().StringVarP(&username, "username", "u", "username", "The username")
+	rootCmd.PersistentFlags().StringVarP(&username, "admin", "u", "username", "The username")
 	rootCmd.PersistentFlags().StringVarP(&password, "password", "p", "admin", "The password")
 	rootCmd.PersistentFlags().StringVarP(&data, "data", "d", "{}", "JSON Record")
 

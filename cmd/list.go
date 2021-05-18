@@ -14,21 +14,18 @@ var listCmd = &cobra.Command{
 	Short: "List all available users",
 	Long:  `The list command lists all available users.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("list called")
 		endpoint := "/getall"
-
 		user := User{Username: username, Password: password}
-		fmt.Println(user)
 
 		// bytes.Buffer is both a Reader and a Writer
 		buf := new(bytes.Buffer)
 		err := user.ToJSON(buf)
 		if err != nil {
-			fmt.Println(err)
+			fmt.Println("JSON:", err)
 			return
 		}
 
-		req, err := http.NewRequest("GET", SERVER+PORT+endpoint, buf)
+		req, err := http.NewRequest(http.MethodGet, SERVER+PORT+endpoint, buf)
 		if err != nil {
 			fmt.Println("GetAll – Error in req: ", err)
 			return
@@ -41,7 +38,7 @@ var listCmd = &cobra.Command{
 
 		resp, err := c.Do(req)
 		if err != nil {
-			fmt.Println(err)
+			fmt.Println("Do:", err)
 			return
 		}
 
@@ -49,17 +46,16 @@ var listCmd = &cobra.Command{
 			fmt.Println(resp)
 			return
 		}
-		defer resp.Body.Close()
 
 		var users = []User{}
-		SliceFromJSON(users, resp.Body)
+		SliceFromJSON(&users, resp.Body)
 		data, err := PrettyJSON(users)
 		if err != nil {
 			fmt.Println(err)
 			return
 		}
 
-		fmt.Print("Data: ", data)
+		fmt.Print(data)
 	},
 }
 
