@@ -9,15 +9,16 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var endpoint = "/getall"
-
 var listCmd = &cobra.Command{
 	Use:   "list",
 	Short: "List all available users",
 	Long:  `The list command lists all available users.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("list called")
+		endpoint := "/getall"
+
 		user := User{Username: username, Password: password}
+		fmt.Println(user)
 
 		// bytes.Buffer is both a Reader and a Writer
 		buf := new(bytes.Buffer)
