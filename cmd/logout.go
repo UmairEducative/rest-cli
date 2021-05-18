@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/spf13/cobra"
 )
@@ -13,9 +14,7 @@ var logoutCmd = &cobra.Command{
 	Short: "Logout for user",
 	Long:  `Logging out a user from the system.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("logout called")
-
-		endpoint := "/login"
+		endpoint := "/logout"
 		user := User{Username: username, Password: password}
 
 		// bytes.Buffer is both a Reader and a Writer
@@ -26,12 +25,29 @@ var logoutCmd = &cobra.Command{
 			return
 		}
 
-		req, err := http.NewRequest("GET", SERVER+PORT+endpoint, buf)
+		req, err := http.NewRequest(http.MethodPost, SERVER+PORT+endpoint, buf)
 		if err != nil {
 			fmt.Println("GetAll – Error in req: ", err)
 			return
 		}
 		req.Header.Set("Content-Type", "application/json")
+
+		c := &http.Client{
+			Timeout: 15 * time.Second,
+		}
+
+		resp, err := c.Do(req)
+		if err != nil {
+			fmt.Println("Do:", err)
+			return
+		}
+
+		if resp.StatusCode != http.StatusOK {
+			fmt.Println(resp)
+			return
+		} else {
+			fmt.Println("User", user.Username, "logged out!")
+		}
 	},
 }
 
