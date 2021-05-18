@@ -1,7 +1,9 @@
 package cmd
 
 import (
+	"encoding/json"
 	"fmt"
+	"io"
 	"os"
 
 	"github.com/spf13/cobra"
@@ -21,6 +23,16 @@ type User struct {
 	LastLogin int64  `json:"lastlogin"`
 	Admin     int    `json:"admin"`
 	Active    int    `json:"active"`
+}
+
+func (p *User) FromJSON(r io.Reader) error {
+	e := json.NewDecoder(r)
+	return e.Decode(p)
+}
+
+func (p *User) ToJSON(w io.Writer) error {
+	e := json.NewEncoder(w)
+	return e.Encode(p)
 }
 
 var rootCmd = &cobra.Command{
