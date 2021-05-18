@@ -8,6 +8,12 @@ import (
 	"github.com/spf13/viper"
 )
 
+var SERVER string
+var PORT string
+var data string
+var username string
+var password string
+
 type User struct {
 	ID        int    `json:"id"`
 	Username  string `json:"user"`
@@ -35,7 +41,12 @@ func init() {
 	rootCmd.PersistentFlags().StringP("password", "p", "1234", "The password")
 	rootCmd.PersistentFlags().StringP("data", "d", "{}", "JSON Record")
 
+	rootCmd.PersistentFlags().StringVar(&SERVER, "server", "http://localhost", "RESTful server hostname")
+	rootCmd.PersistentFlags().StringVar(&PORT, "port", ":1234", "Port of RESTful Server")
+
 	viper.BindPFlag("username", rootCmd.PersistentFlags().Lookup("server"))
 	viper.BindPFlag("password", rootCmd.PersistentFlags().Lookup("port"))
 	viper.BindPFlag("data", rootCmd.PersistentFlags().Lookup("data"))
+	viper.BindPFlag("SERVER", rootCmd.PersistentFlags().Lookup("SERVER"))
+	viper.BindPFlag("PORT", rootCmd.PersistentFlags().Lookup("PORT"))
 }
