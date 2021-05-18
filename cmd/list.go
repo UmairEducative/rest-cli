@@ -51,7 +51,7 @@ var listCmd = &cobra.Command{
 		defer resp.Body.Close()
 
 		var users = []User{}
-		SliceFromJSON(&users, resp.Body)
+		SliceFromJSON(users, resp.Body)
 		data, err := PrettyJSON(users)
 		if err != nil {
 			fmt.Println(err)

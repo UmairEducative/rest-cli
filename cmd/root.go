@@ -1,13 +1,13 @@
 package cmd
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io"
 	"os"
 
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 var SERVER string
@@ -25,6 +25,11 @@ type User struct {
 	Active    int    `json:"active"`
 }
 
+const (
+	empty = ""
+	tab   = "\t"
+)
+
 func (p *User) FromJSON(r io.Reader) error {
 	e := json.NewDecoder(r)
 	return e.Decode(p)
@@ -33,6 +38,31 @@ func (p *User) FromJSON(r io.Reader) error {
 func (p *User) ToJSON(w io.Writer) error {
 	e := json.NewEncoder(w)
 	return e.Encode(p)
+}
+
+// SliceFromJSON decodes a serialized slice with JSON records
+func SliceFromJSON(slice interface{}, r io.Reader) error {
+	e := json.NewDecoder(r)
+	return e.Decode(slice)
+}
+
+// SliceToJSON encodes a slice with JSON records
+func SliceToJSON(slice interface{}, w io.Writer) error {
+	e := json.NewEncoder(w)
+	return e.Encode(slice)
+}
+
+// PrettyJSON is for pretty printing JSON records
+func PrettyJSON(data interface{}) (string, error) {
+	buffer := new(bytes.Buffer)
+	encoder := json.NewEncoder(buffer)
+	encoder.SetIndent(empty, tab)
+
+	err := encoder.Encode(data)
+	if err != nil {
+		return empty, err
+	}
+	return buffer.String(), nil
 }
 
 var rootCmd = &cobra.Command{
@@ -49,16 +79,10 @@ func Execute() {
 }
 
 func init() {
-	rootCmd.PersistentFlags().StringP("username", "u", "username", "The username")
-	rootCmd.PersistentFlags().StringP("password", "p", "1234", "The password")
-	rootCmd.PersistentFlags().StringP("data", "d", "{}", "JSON Record")
+	rootCmd.PersistentFlags().StringVarP(&username, "username", "u", "username", "The username")
+	rootCmd.PersistentFlags().StringVarP(&password, "password", "p", "admin", "The password")
+	rootCmd.PersistentFlags().StringVarP(&data, "data", "d", "{}", "JSON Record")
 
-	rootCmd.PersistentFlags().StringVar(&SERVER, "server", "http://localhost", "RESTful server hostname")
-	rootCmd.PersistentFlags().StringVar(&PORT, "port", ":1234", "Port of RESTful Server")
-
-	viper.BindPFlag("username", rootCmd.PersistentFlags().Lookup("server"))
-	viper.BindPFlag("password", rootCmd.PersistentFlags().Lookup("port"))
-	viper.BindPFlag("data", rootCmd.PersistentFlags().Lookup("data"))
-	viper.BindPFlag("SERVER", rootCmd.PersistentFlags().Lookup("SERVER"))
-	viper.BindPFlag("PORT", rootCmd.PersistentFlags().Lookup("PORT"))
+	rootCmd.PersistentFlags().StringVarP(&SERVER, "server", "s", "http://localhost", "RESTful server hostname")
+	rootCmd.PersistentFlags().StringVarP(&PORT, "port", "P", ":1234", "Port of RESTful Server")
 }

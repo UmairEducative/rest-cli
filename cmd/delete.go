@@ -13,6 +13,7 @@ var deleteCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("delete called")
 		user := User{Username: username, Password: password}
+		fmt.Println(user)
 	},
 }
 

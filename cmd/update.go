@@ -12,11 +12,11 @@ var updateCmd = &cobra.Command{
 	Long:  `Update the user data.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("update called")
+		user := User{Username: username, Password: password}
+		fmt.Println(user)
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(updateCmd)
-	user := User{Username: username, Password: password}
-
 }
