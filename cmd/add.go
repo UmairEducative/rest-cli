@@ -15,7 +15,6 @@ var addCmd = &cobra.Command{
 	Short: "Add a new user",
 	Long:  `Add a new user to the system.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("add called")
 		endpoint := "/add"
 		u1 := User{Username: username, Password: password}
 

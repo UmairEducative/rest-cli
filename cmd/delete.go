@@ -15,7 +15,6 @@ var deleteCmd = &cobra.Command{
 	Short: "Deleting users",
 	Long:  `This command deletes existing users from the database.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("delete called")
 		endpoint := "/username"
 		user := User{Username: username, Password: password}
 
@@ -56,7 +55,7 @@ var deleteCmd = &cobra.Command{
 		if resp.StatusCode != http.StatusOK {
 			fmt.Println("Status code:", resp.Status)
 		} else {
-			fmt.Println("User with ID", u2.Username, "deleted.")
+			fmt.Println("User with ID", u2.ID, "deleted.")
 		}
 	},
 }
