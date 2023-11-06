@@ -1,4 +1,4 @@
-module github.com/mactsouk/rest-cli
+module github.com/Educative-Content/rest-cli
 
 go 1.16
 
