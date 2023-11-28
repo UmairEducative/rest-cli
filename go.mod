@@ -1,4 +1,4 @@
-module github.com/Educative-Content/rest-cli
+module github.com/UmairEducative/rest-cli
 
 go 1.16
 
